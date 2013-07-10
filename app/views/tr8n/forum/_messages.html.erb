@@ -1,0 +1,14 @@
+<div class="section">
+	<%= tr8n_paginator_tag(@messages, :subject => 'message') %>	
+
+  <table style="width:100%; ">
+    <% @messages.each do |message| %>
+      <%
+        style = (message == @messages.last ? "" : "border-bottom:1px dotted #ccc;" )
+      %>  
+      <tr style="<%=style%>">
+      	<%= render :partial => "message", :locals => {:message => message} %> 
+      </tr>
+    <% end %>
+  </table>
+</div>

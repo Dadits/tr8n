@@ -1,0 +1,23 @@
+<%= render :partial => "header" %>
+
+<div class="documentation_section_title">
+  <%= tr("Welcome to #{Tr8n::Config.site_title} Translation Engine Documentation") %>
+</div>
+
+<div class="documentation_section">
+	<div style="text-align:center;padding:30px;">
+		<%=image_tag("tr8n/tr8n_logo2.png")%>
+	</div>	
+	
+	<p>
+    <%=tr("Thank you for becoming a #{Tr8n::Config.site_title} translator.")%> 
+		<%=tr("We're happy to provide you with a set of translation tools that will enable you to quickly create translations, view and vote on others' translations, and to monitor the progress of each language you are translating.")%>
+  </p>
+	
+  <p>
+    <%=tr("To learn more, use the menu to the left of each page.")%>
+  </p>
+  
+</div>
+
+<%= render :partial => "footer" %>

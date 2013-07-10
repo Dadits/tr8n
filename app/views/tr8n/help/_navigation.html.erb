@@ -1,0 +1,91 @@
+<% @page_title = controller.action_name.titleize.gsub("_"," ") %>
+<% @version = 1 %>
+
+<%
+  sections = [
+    {:title => "Introduction", :sections => [
+        {:title => "Welcome", :action => :index},
+    ]}, 
+    {:title => "Translation Basics", :sections => [
+        {:title => "Creating Translations", :action => :creating_translations},
+        {:title => "Voting on Translations", :action => :voting_on_translations},
+        {:title => "Understanding Ranks", :action => :ranks},
+    ]}, 
+    {:title => "Translator Tools", :sections => [
+        {:title => "Language Selector", :action => :language_selector},
+        {:title => "Inline Translator", :action => :inline_translator},
+        {:title => "Advanced Tools", :action => :advanced_tools, :sections => [
+          {:title => "Management", :action => :management},
+          {:title => "Dashboard", :action => :dashboard},
+          {:title => "Site Map", :action => :site_map},
+          {:title => "Phrases", :action => :phrases},
+          {:title => "Relationships", :action => :relationships},
+          {:title => "Translations", :action => :translations},
+          {:title => "Awards", :action => :awards},
+          {:title => "Discussions", :action => :discussions},
+          {:title => "Help", :action => :help},
+        ]},
+    ]}, 
+  ]
+%>
+
+
+<style>
+.documentation_sidebar {
+  font: 11px Arial,Helvetica,sans-serif;
+}
+
+.navigation_header {
+  font: 12px Arial,Helvetica,sans-serif;
+  font-weight: bold;
+  padding-left: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+	color: #888888 !important;
+}
+
+.section_link {
+	padding:3px;
+}
+
+.section_link a {
+	text-decoration:none;
+}
+	
+.section_link a:hover {
+  text-decoration:none;
+}
+
+.section_link:hover {
+	background: #eee;
+}
+
+.section_link.selected {
+  background: #4096EE;
+	color:white;
+}
+
+.section_link.selected a {
+  color:white;
+}
+</style>
+
+<%= form_tag({}, :id => "version_form", :method => :get) do %>
+<%=hidden_field_tag(:path, params[:path])%>
+<div class="documentation_sidebar">
+	
+	<% sections.each do |sec| %>
+    <div class="navigation_header"><%=tr(sec[:title])%></div>
+		<% (sec[:sections] || []).each do |sec1| %>
+      <div class="section_link <%="selected" if controller.action_name == sec1[:action].to_s %>"><%=link_to(tr(sec1[:title]), :action => sec1[:action])%></div>
+			<% if sec1[:sections] %>
+		    <% sec1[:sections].each do |sec2| %>
+	  	      <div style="padding-left:15px;" class="section_link <%="selected" if controller.action_name == sec2[:action].to_s %>"><%=link_to(tr(sec2[:title]), :action => sec2[:action])%></div>
+		    <% end %> 
+			<% end %> 
+		<% end %>	
+	<% end %>
+
+</div>
+<% end %>

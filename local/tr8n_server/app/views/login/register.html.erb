@@ -1,0 +1,56 @@
+<h2 class="underscore content_hd">
+  <%=tr('Register for Tr8n Examples Application Translator Account') %>
+</h2>
+<div class="content_bd">
+  <div class="page_form">
+  <%= form_tag({}, :method => :post) do %>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('Email:') %></div>
+      <div class="field_bd">
+        <%=text_field_tag :email, params[:email], :class => "xlong_input h4" %> &nbsp; *
+      </div>
+    </div>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('Password:') %></div>
+      <div class="field_bd">
+        <%=password_field_tag :password, "", :class => "xlong_input h4"%> &nbsp; *
+      </div>
+    </div>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('Confirm Password:') %></div>
+      <div class="field_bd">
+        <%=password_field_tag :password_confirm, "", :class => "xlong_input h4"%> &nbsp; *
+      </div>
+    </div>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('First Name:') %></div>
+      <div class="field_bd">
+        <%=text_field_tag :first_name, params[:first_name], :class => "xlong_input h4" %>
+      </div>
+    </div>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('Last Name:') %></div>
+      <div class="field_bd">
+        <%=text_field_tag :last_name, params[:last_name], :class => "xlong_input h4" %>
+      </div>
+    </div>
+    <div class="field">
+      <div class="strong field_hd txt_r h4"><%=tr('Gender:') %></div>
+      <div class="strong" style="padding-top:8px;">
+        &nbsp; <%=radio_button_tag(:gender, "male", params[:gender] == 'male')%> <%=tr('Male', 'Gender') %>
+        &nbsp; <%=radio_button_tag(:gender, "male", params[:gender] == 'female')%> <%=tr('Female', 'Gender') %>
+				
+				<span style="color:#888; padding-left:10px; font-size:10px;"><%=tr("Used for gender based translations") %></span>	
+      </div>
+    </div>
+    <br>
+    <div class="field">
+      <div class="field_bd">
+        <button class="button super blue xlarge"><span><%= tr('Register') %></span></button>
+        <%= tr("or") %>
+        <%=link_to(tr("Login"), "/login/index")%>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>

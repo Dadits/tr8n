@@ -1,0 +1,133 @@
+<%= render :partial => "/tr8n/admin/common/header" %>
+
+<div class="section_title">
+  <span style="font-size:12px; color:grey; float:right; padding-top:5px;">
+    <% unless Tr8n::Config.enable_client_sdk? %>
+      <span style="color:red">Make sure that JS Client SDK is enabled!</span>
+    <% end %>
+  </span> 
+	
+  Tr8n JavaScript Client SDK Test Tool  
+</div>
+
+<div style="font-size:12px; color:grey; padding-bottom:5px;">
+  Tr8n JavaScript Client SDK is used for retrieving translations in a client application as well as register new phrases on the server. 
+	It fully supports all language rules and token types available on the server. 
+	Keep in mind that token notations may deffer from the server side implementation - based on the language used on the server.
+</div> 
+
+<div style="background:#EFF8FF; border: 1px dotted #ccc; padding:5px; padding-bottom: 0px;">
+<%= form_tag do %>
+  <table style="width:100%;">
+    <tr>
+      <td style="width:42%; padding:2px; background:#F1F4FA;">
+        <div style="font-weight:bold;">Label <span style='color:grey'>- text to be translated (required)</span></div>
+        <%=text_area_tag(:label, "{count|| message, messages}", :style => "width:98%; height:40px;")%><br>
+      </td>
+      <td style="width:42%; padding:2px; background:#F1F4FA;">
+        <div style="font-weight:bold;">Description <span style='color:grey'>- defines the context of the label (optional)</span></div>
+        <%=text_area_tag(:description, "", :style => "width:98%; height:40px;")%><br>
+      </td>
+      <td rowspan="3" style="width:15%; padding:2px; vertical-align:top;">
+			   <center>
+  			   <div style="width:150px; text-align:center; padding-top:15px;">
+             <button style="width:100%;" onClick="translate();return false;">Translate</button>
+             <button style="width:100%;" onClick="translate({skip_decorations:true});return false;">Translate Label</button>
+             <button style="width:100%;" onClick="searchPhrase();return false;">View Translation Key</button>
+             <br><br>
+             <button style="width:100%;" onClick="clearResults();return false;">Clear Results</button>
+             <button style="width:100%;" onClick="tr8nLightbox.show('/tr8n/admin/clientsdk/lb_samples', {height:500});return false;">View Examples</button>
+             <button style="width:100%;" onClick="reloadTranslations();return false;">Reload Translations</button>
+             <button style="width:100%;" onClick="tr8nProxy.logSettings();return false;">Print Settings</button>
+             <button style="width:100%;" onClick="tr8nProxy.logTranslations();return false;">Print Translation Cache</button>
+          </div> 
+				 </center>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:2px; background:#F1F4FA;">
+        <div style="font-weight:bold;">Tokens JSON <span style='color:grey'>- provides values for tokens used in translation. (required, if data tokens are defined)</span></div>
+        <%=text_area_tag(:tokens, "{'count':5}", :style => "width:99%; height:50px;")%>     
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:2px;">
+        <div style="font-weight:bold; padding-top:10px;">Translation <span style='color:grey'>- translated label with substituted tokens</span></div>
+        <div id="result_html" style="background:#F9F8F7; height:40px; overflow:auto; border:1px dotted #ccc; padding:10px;"></div>
+        <div style="font-weight:bold; padding-top:10px;">Translation Raw HTML <span style='color:grey'>- translated label with substituted tokens</span></div>
+        <%=text_area_tag(:result, "", :style => "width:99%; background:#F9F8F7;height:50px; border:1px solid #ccc;", :readonly => true)%>     
+      </td>
+    </tr>
+  </table>
+<% end %>
+</div>
+
+<div id="tr8n_debugger" class="section_box colored" style="font-size:10px; height:350px; overflow:auto; margin: 10px;">
+</div>
+
+<script>
+  tr8nProxy.enableLogger();
+
+  function clearResults() {
+		Tr8n.element('result').value = '';
+    Tr8n.element('result_html').innerHTML = '';
+    tr8nProxy.logger.clear();
+	}
+	
+  function reloadTranslations() {
+		tr8nProxy.initTranslations(true);
+	}
+	
+	function useExample(index) {
+    Tr8n.element('label').value = Tr8n.value('tr8n_example_label_' + index);
+		Tr8n.element('tokens').value = Tr8n.value('tr8n_example_tokens_' + index);
+		clearResults();
+		tr8nLightbox.hide();
+	}
+	
+  function translate(opts) {
+    opts = opts || {};
+    var tokens = null;
+    
+    if (Tr8n.element('tokens').value != "") {
+      tokens = eval("[" + Tr8n.value('tokens') + "]")[0];
+    }
+    
+    Tr8n.element('result').value = tr(Tr8n.value('label'), '', tokens, opts);
+    Tr8n.element('result_html').innerHTML = Tr8n.element('result').value;
+  }
+  
+  function searchPhrase() {
+    url = "/tr8n/phrases/index?search=" + encodeURI(Tr8n.value('label'));
+    window.open(url,'translation_key');
+  }
+
+  function speedTest() {
+		var tokens = null;
+
+    clearResults();
+
+    if (Tr8n.element('tokens').value != "") {
+      tokens = eval("[" + Tr8n.value('tokens') + "]")[0];
+    }
+
+    tr8nProxy.log("Running tests (100 itterations)... ");
+    tr8nProxy.log("Disabling logger... ");
+		tr8nProxy.disableLogger();
+		
+		var result = '';
+    var t0 = new Date().getTime();
+    for(var i=0; i<100; i++) {
+      result = tr8nProxy.tr(Tr8n.value('label'), '', tokens);
+    }
+    var t1 = new Date().getTime();
+		
+		Tr8n.element('result').value = result;
+		
+    tr8nProxy.enableLogger();
+    tr8nProxy.log("Enabling logger... ");
+    tr8nProxy.log('Test took: ' + (t1 - t0) + ' mls');
+  }
+</script>
+
+<%= render :partial => "/tr8n/admin/common/footer" %>

@@ -1,0 +1,12 @@
+<div class="section_title">
+  <div style="float:right;">
+    <% if mode == :view %>
+      <%=link_to_function(image_tag("tr8n/table_edit.png"), "switchSectionMode('#{section}', 'edit')") %>
+    <% else %>
+      <%=link_to_function(image_tag("tr8n/disk.png"), "submitSection('#{section}')")%>
+      <%=link_to_function(image_tag("tr8n/cancel.png"), "switchSectionMode('#{section}', 'view')")%>
+    <% end %>  
+  </div>
+
+  <%=trla(label, description) %>
+</div>
