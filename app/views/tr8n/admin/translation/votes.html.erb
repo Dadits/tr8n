@@ -1,6 +1,6 @@
 <%= render :partial => "/tr8n/admin/common/header" %>
 <%= render :partial => "tabs" %>
-<%= tr8n_will_filter(@votes) %>
+<%-# tr8n_will_filter(@votes) %>
 
 <%= form_tag("", :id => "votes_form") do %>
   <%= will_filter_table_tag(@votes, :columns => [
