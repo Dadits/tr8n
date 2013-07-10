@@ -197,10 +197,10 @@ class Tr8n::LanguageCaseRule < ActiveRecord::Base
     desc << " token value"
     desc << describe_part(1)
   
-    if ["true", true].include?(definition["multipart"])
-      desc << " " << definition["operator"]
-      desc << describe_part(2)
-    end
+    #if ["true", true].include?(definition["multipart"])
+    #  desc << " " << definition["operator"]
+    #  desc << describe_part(2)
+    #end
     
     desc << ", then"
     case definition["operation"]
