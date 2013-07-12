@@ -1,6 +1,6 @@
 <%= render :partial => "/tr8n/admin/common/header" %>
 <%= render :partial => "tabs" %>
-<%-# tr8n_will_filter(@key_sources) %>
+<%= tr8n_will_filter(@key_sources) %>
 
 <%= form_tag("", :id => "key_sources_form") do %>
   <%= will_filter_table_tag(@key_sources, :columns => [
