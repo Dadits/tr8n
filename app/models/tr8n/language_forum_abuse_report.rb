@@ -42,7 +42,7 @@
 #++
 
 class Tr8n::LanguageForumAbuseReport < ActiveRecord::Base
-  set_table_name :tr8n_language_forum_abuse_reports
+  self.table_name = :tr8n_language_forum_abuse_reports
 
   attr_accessible :language_id, :translator_id, :language_forum_message_id, :reason
   attr_accessible :language, :translator, :language_forum_message
